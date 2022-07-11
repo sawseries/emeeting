@@ -148,7 +148,7 @@ function selects_edit_root(id) {
     if (id == '1') {
          $("#tr_link_edit_root").hide();
          $("#tr_file_edit_root").hide();
- 
+        
      } else if (id == '2') {
  
          //$("#tr_sub_text").hide();
@@ -159,6 +159,7 @@ function selects_edit_root(id) {
          //$("#tr_sub_text").hide();
          $("#tr_link_edit_root").hide();
          $("#tr_file_edit_root").fadeIn();
+         
      }
 }
 

@@ -114,6 +114,8 @@ function setsubtop(code){
              
       
 function selecteditsub(id) {
+
+    $("#s_edit_sub_error").text("");
     if (id == '1') {
        // $("#tr_text").fadeIn();
         $("#tr_link_edit_sub").hide();
@@ -127,8 +129,30 @@ function selecteditsub(id) {
 
     } else if (id == '3') {
         //$("#tr_text_insert_root").hide();
-        $("#tr_link_edit_sub").hide();
-        $("#tr_file_edit_sub").fadeIn();
+        //$("#tr_link_edit_sub").hide();
+        //$("#tr_file_edit_sub").fadeIn();
+
+        var hdnfile = $("#txt_hdn_edit_sub_file").val();
+     
+        if(hdnfile==""){
+
+           $("#tr_link_edit_sub").hide();
+           $("#tr_file_edit_sub").fadeIn();
+           $("#txt_subfile").toggle();
+           $("#control_edit_file_sub").hide();
+           $("#ele_edit_file_sub").show();
+           $("#txt_subfile").show();
+
+       }else{
+
+           $("#tr_link_edit_sub").hide();
+           $("#tr_file_edit_sub").fadeIn();
+           $("#txt_subfile").toggle();
+           $("#control_edit_file_sub").show();
+           $("#ele_edit_file_sub").hide();
+
+       }
+
     }
 }
 
@@ -216,7 +240,8 @@ function selectsub(id) {
 
 
 function selects_edit_root(id) { 
-    
+ 
+    $("#s_edit_root_error").html("");
     if (id == '1') {
          $("#tr_link_edit_root").hide();
          $("#tr_file_edit_root").hide();
@@ -228,116 +253,46 @@ function selects_edit_root(id) {
          $("#tr_file_edit_root").hide();
  
      } else if (id == '3') {
-         //$("#tr_sub_text").hide();
-         $("#tr_link_edit_root").hide();
-         $("#tr_file_edit_root").fadeIn();
+         var hdnfile = $("#txt_hdn_edit_root_file").val();
+    
+         if(hdnfile==""){
+
+            $("#tr_link_edit_root").hide();
+            $("#tr_file_edit_root").fadeIn();
+            $("#txt_rootfile").toggle();
+            $("#control_edit_file_root").hide();
+            $("#ele_edit_file_root").show();
+            $("#txt_rootfile").show();
+
+        }else{
+
+            $("#tr_link_edit_root").hide();
+            $("#tr_file_edit_root").fadeIn();
+            $("#txt_rootfile").toggle();
+            $("#control_edit_file_root").show();
+            $("#ele_edit_file_root").hide();
+
+        }
+
      }
+}
+
+function rootfile_toggle(){
+    $("#ele_edit_file_root").toggle();
+    $("#txt_edit_root_file").show();
+}
+
+
+function subfile_toggle(){
+    $("#ele_edit_file_sub").toggle();
+    $("#txt_edit_sub_file").show();
+}
+
+function toggle() {
+    $("#navbar_center").toggle();
 }
 
 
 
-
-
-
-            function toggle() {
-                $("#navbar_center").toggle();
-            }
-
-
-
-            function setedit_sub(ids){
-  
-
-
-                $.ajax({
-                    url: "./index.php?controller=Agenda&action=getroot_edit",
-                    type: "POST",
-                    data: { id: ids },
-                    success: function (data) {
-                       
-                        var result = jQuery.parseJSON(data);
-                        $("#txttopic4").text(result.topic);
-                        $("#editor_topic4").html(result.topic);
-                        $("#hdneditsubid").val(result.id);
-        
-                        $("#rdo_text").prop("checked", false);
-                        $("#rdo_link").prop("checked", false);
-                        $("#rdo_file").prop("checked", false);
-                        $("#tr_link_edit_root").hide();
-                        $("#tr_file_edit_root").hide();
-        
-        
-                        if(result.type=='1'){
-                            $("#rdo_edit_sub_text").prop("checked", true);
-                            $("#tr_link_edit_sub").hide();
-                            $("#tr_file_edit_sub").hide();
-                        }else if(result.type=='2'){
-                            $("#rdo_edit_sub_link").prop("checked", true);
-                            $("#tr_link_edit_sub").show();
-                            $("#tr_file_edit_sub").hide();
-                            $("#txteditsublink").val(result.file);
-                        }else if(result.type=='3'){
-                            $("#rdo_edit_sub_file").prop("checked", true);
-                            $("#tr_file_edit_sub").show();
-                            $("#tr_link_edit_sub").hide();
-                            $("#txthdnsubfile").val(result.file);
-                        }
-                     
-                    },
-                    error: function (xhr, desc, err) {
-                        alert(err);
-                    }
-                });
-                
-                                        
-                             }
-                
-
-                             function seteditroot(ids){
-                              
-                                $.ajax({
-                                    url: "./index.php?controller=Agenda&action=getroot_edit",
-                                    type: "POST",
-                                    data: { id: ids },
-                                    success: function (data) {
-                                        //alert(data);
-                                        var result = jQuery.parseJSON(data);
-                                        //alert(result.id);
-                                        $("#txttitle2").text(result.title);
-                                        $("#txttopic2").text(result.topic);
-                                     
-                                        $("#editor_topic2").html(result.topic);
-                                        $("#editor_title2").html(result.title);
-                                     
-                                        $("#hdn_edit_root_id").val(result.id);
-                                     
-                                     
-                                       
-                                        $("#rdo_edit_root_text").prop("checked", false);
-                                        $("#rdo_edit_root_link").prop("checked", false);
-                                        $("#rdo_edit_root_file").prop("checked", false);
-                                        $("#tr_link_edit_root").hide();
-                                        $("#tr_file_edit_root").hide();
-                                     
-                                     
-                                        if(result.type=='1'){
-                                            $("#rdo_edit_root_text").prop("checked", true);
-                                        }else if(result.type=='2'){
-                                            $("#rdo_edit_root_link").prop("checked", true);
-                                            $("#tr_link_edit_root").show();
-                                            $("#tr_link_edit_root").show();
-                                            $("#txt_edit_root_link").val(result.file);
-                                        }else if(result.type=='3'){
-                                            $("#rdo_edit_root_file").prop("checked", true);
-                                            $("#tr_file_edit_root").show();
-                                            $("#txthdnfile").val(result.file);
-                                        }     
-                                     
-                                    },
-                                    error: function (xhr, desc, err) {
-                                        alert(err);
-                                    }
-                                });
-                            }
 
 

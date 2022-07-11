@@ -67,20 +67,8 @@ require_once './layouts/header_admin.php';
             <tr>
                 <td> ประเภทการประชุม </td>
                 <td>
-                    <div id="display_doc_type" onclick="showedit('doc_type');" ondblclick="showedit('doc_type');"><?=report($meeting["doc_type"]); ?></div>
-                    <div id="control_doc_type" class="displaynone">
-<!--                        <textarea id="txt_edit_doc_type" name="txt_edit_doc_type" class="form-control"><?= $meeting["doc_type"]; ?></textarea>-->
-                        <select id="txt_edit_doc_type" name="sle_edit_doc_type" class="form-control" onchange="updates('doc_type','<?= $meeting["code"]; ?>',this);">
-                           <?php if($meeting["doc_type"]=='1'){ ?>
-                            <option value="1" selected>ระเบียบวาระการประชุม</option>
-                            <option value="2">รายงานการประชุม</option>
-                           <?php }else if($meeting["doc_type"]=='2'){ ?>
-                            <option value="1">ระเบียบวาระการประชุม</option>
-                            <option value="2" selected>รายงานการประชุม</option>
-                           <?php } ?>
-                        </select>
-                    </div>
-
+                    <div id="display_doc_type"><b><?=report($meeting["doc_type"]); ?></b></div>
+                    
                 </td>
             </tr>
             <tr>
@@ -201,7 +189,7 @@ require_once './layouts/header_admin.php';
                     </span>       
                     </td>
                     
-                    <td><input type="text" class="form-control" id="txtlink" name="txtlink" value="<?= $meeting["link"]; ?>" readonly></td>
+                    <td><input type="text" class="form-control" id="txtlink" name="txtlink" onclick="selects_type('3');" value="<?= $meeting["link"]; ?>" readonly></td>
                    
                    
                 </tr>
@@ -266,7 +254,7 @@ require_once './layouts/header_admin.php';
                     <h5 class="modal-title" id="label">เพิ่มหัวข้อ</h5>
                     
                     </div>
-                    <form id="frminsertroot" name="frminsertroot" action="./index.php?controller=Admin&action=insert_term" method="post" enctype="multipart/form-data">
+                    <form id="frminsertroot" name="frminsertroot" action="./index.php?controller=Agenda&action=insert_term" method="post" enctype="multipart/form-data">
                     <input type="hidden" id="hdndoc_code" name="hdndoc_code" value="<?= $meeting["code"]; ?>" class="form-control">    
                     <table class="tbl_term table_border" style="width:100%;" >
                             <tr>
@@ -332,8 +320,12 @@ require_once './layouts/header_admin.php';
                             </tr>    
                             <tr id="tr_file_insert_root" style="display:none;">
                                 <td>file </td>
-                                <td><input type="file" id="txtfile" name="txtfile"></td>
+                                <td>
+                                   
+                                   <input type="file" id="txtfile" name="txtfile">
+                                </td>
                             </tr>  
+                          
                         </table>
 
                         <div class="modal-footer">
@@ -348,7 +340,7 @@ require_once './layouts/header_admin.php';
 <!--modal-->
 <div  class="modal"  id="edit_root_modal" tabindex="-1" role="dialog">
                     <div class="modal-content">
-                    <form id="frmeditroot" name="frmeditroot" action="./index.php?controller=Admin&action=edit_root" method="post" enctype="multipart/form-data">
+                    <form id="frmeditroot" name="frmeditroot" action="./index.php?controller=Agenda&action=edit_root" method="post" enctype="multipart/form-data">
                     <div class="modal-header">
                         <h5 class="modal-title" id="label">แก้ไขหัวข้อ</h5>
                         <input type="hidden" id="hdneditdoc_code" name="hdneditdoc_code" value="<?= $meeting["code"]; ?>" class="form-control">
@@ -403,10 +395,20 @@ require_once './layouts/header_admin.php';
                             <tr id="tr_file_edit_root" class="displaynone">
                                 <td>file </td>
                                 <td>
+                                    
+                                    <div id='control_edit_file_root' style='display:none;'>
                                     <input type="hidden" id="txt_hdn_edit_root_file" name="txt_hdn_edit_root_file" class="form-control">
-                                    <input type="file" id="txtfile" name="txtfile">
+                                    <span id='s_file_root_nm' ></span> <a onclick='rootfile_toggle();' style='color:red'><b>แก้ไข</b></a>
+                                    </div>
+                                    <div id='ele_edit_file_root' style='display:none;'>
+                                    <input type="file" id="txt_edit_root_file" name="txt_edit_root_file">
+                                    </div> 
                                 </td>
-                            </tr>      
+                            </tr>    
+                            <tr id='tr_edit_root_error'>
+                                <td></td>
+                                <td><span id='s_edit_root_error' style='color:red;'></span></td>
+                            </tr>  
                         </table>
                         <div class="modal-footer">
                         <button type="submit" id="btneditroots" name="btneditroots" class="btn btn-primary">แก้ไข</button>
@@ -420,7 +422,7 @@ require_once './layouts/header_admin.php';
 <!--modal-->
 <div  class="modal"  id="sub_modal" tabindex="-1" role="dialog">
                     <div class="modal-content">
-                    <form id="frminsertsub" action="./index.php?controller=Admin&action=insert_sub" method="post" enctype="multipart/form-data">
+                    <form id="frminsertsub" action="./index.php?controller=Agenda&action=insert_sub" method="post" enctype="multipart/form-data">
                 <div>
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">เพิ่มหัวข้อย่อย</h5>
@@ -488,7 +490,7 @@ require_once './layouts/header_admin.php';
 <!--modal-->
 <div  class="modal"  id="edit_sub_modal" tabindex="-1" role="dialog">
                     <div class="modal-content">
-                    <form id="frmeditsub" action="./index.php?controller=Admin&action=edit_sub" method="post" enctype="multipart/form-data">
+                    <form id="frmeditsub" action="./index.php?controller=Agenda&action=edit_sub" method="post" enctype="multipart/form-data">
                 <div>
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">แก้ไขหัวข้อย่อย</h5>
@@ -533,13 +535,25 @@ require_once './layouts/header_admin.php';
                                 <td>link </td>
                                 <td><input type="text" class="form-control" id="txteditsublink" name="txteditsublink" style="width:100%;"></td>
                             </tr>    
+                           
+                            
                             <tr id="tr_file_edit_sub" class="displaynone">
                                 <td>file </td>
                                 <td>
-                                    <input type="hidden" id="txthdnsubfile" name="txthdnsubfile" class="form-control">
-                                    <input type="file" id="txt_edit_sub_file" name="txt_edit_sub_file" class="form-control">
+                                    
+                                    <div id='control_edit_file_sub' style='display:none;'>
+                                    <input type="hidden" id="txt_hdn_edit_sub_file" name="txt_hdn_edit_sub_file" class="form-control">
+                                    <span id='s_file_sub_nm' ></span> <a onclick='subfile_toggle();' style='color:red'><b>แก้ไข</b></a>
+                                    </div>
+                                    <div id='ele_edit_file_sub' style='display:none;'>
+                                    <input type="file" id="txt_edit_sub_file" name="txt_edit_sub_file">
+                                    </div> 
                                 </td>
-                            </tr>      
+                            </tr>    
+                            <tr id='tr_edit_sub_error'>
+                                <td></td>
+                                <td><span id='s_edit_sub_error' style='color:red;'></span></td>
+                            </tr>  
 
                         </table>
                     </div>

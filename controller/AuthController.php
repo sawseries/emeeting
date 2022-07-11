@@ -48,6 +48,8 @@ class AuthController extends Base {
             $_SESSION["user"] = $term["username"];
             Redirect::url("Master", "index");
 
+            $update = Base::query("update user set last_login = '".date('Y-m-d H:i:s')."',ip='".Base::ip()."' where id='".$term["id"]."'")->update();
+
         } else {
             Redirect::view("login/login", array("fail" => "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"));
 

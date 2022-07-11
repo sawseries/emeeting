@@ -249,7 +249,7 @@ class Base {
         return $row;
     }
 
-    public static function getIP() {
+    public static function ip() {
         if (getenv('HTTP_CLIENT_IP'))
             $ip = getenv('HTTP_CLIENT_IP');
         else if (getenv('HTTP_X_FORWARDED_FOR'))

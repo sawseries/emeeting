@@ -207,17 +207,26 @@ class AgendaController extends Base {
                 }else if($terms["type"]=='2'){
                     $topic = "<a href='".$terms["file"]."' target='_blank'>".$terms["topic"]."</a>";
                 }else if($terms["type"]=='3'){
-                    $topic = "<a href='./storage/agenda/".$terms["file"]."' target='_blank'>".$terms["topic"]."</a><img src='./assets/image/file_icon.jpg' style='width:20px;'>";
+                    $topic = "<a href='./storage/agenda/".$terms["file"]."' target='_blank'>".$terms["topic"]."</a>";
                 }
 
                 $this->strsub .= "<tr><td style='width:15%;vertical-align:top;'>";
                 $this->strsub .= "<input type='hidden' id='txtno_".$i."' name='txtno[".$i."]' value=".$terms["id"].">".$terms["title"]."</td>";
-                $this->strsub .= "<td style='width:60%;padding:0em;'>";
-                $this->strsub .= "<div style='width:100%;padding:0.6em;'>".$topic."</div>";
-                $this->strsub .= "<div style='width:100%;background-color:red;'>";     
+                $this->strsub .= "<td style='width:60%;padding:0em;border:1px solid #7F8C8D;'>";
+                $this->strsub .= "<div style='width:80%;padding:0.6em;float:left;background-color:#e6eeff;'>".$topic."</div>";
+              
+                    $this->strsub .= "<div style='width:20%;padding:0.6em;float:left;text-align:center;background-color:#e6eeff;'>";
+                    if($terms["type"]=='3'){
+                    $this->strsub .= "<a href='./storage/agenda/".$terms["file"]."' target='_blank'><img title='".$terms["file"]."' src='./assets/image/file_icon.jpg' style='width:20px;'></a>";
+                    } else{
+                        $this->strsub .="."; 
+                    }
+                    $this->strsub .= "</div>";  
+                
+                $this->strsub .= "<div style='width:100%;'>";     
                 $this->strsub .= $this->getsubterm_edit($terms["code"]);
                 $this->strsub .= "</div>";              
-                $this->strsub .= "</td>";                
+                $this->strsub .= "</td>";             
                 $this->strsub .= "<th style='width:2%;padding:0.1em;vertical-align:top;'><a title='เพิ่ม' onclick='setsubtop(\"" . $terms["code"] . "\");' class='btn btn-primary' href='#sub_modal' rel='modal:open'><span class='fa fa-plus'></span></a></th>";
                 $this->strsub .= "<th style='width:2%;padding:0.1em;vertical-align:top;'><a onclick='seteditroot(\"" . $terms["id"] . "\");' class='btn btn-default' href='#edit_root_modal' rel='modal:open'><span class='fa fa-pencil-square-o'></span></a></th>";
                 $this->strsub .= "<th style='width:2%;padding:0.1em;vertical-align:top;'><a style='cursor:pointer;' onclick='deleteterm(\"" . $terms["code"] . "\");' class='btn btn-danger'><span class='fa fa-trash'></span></a></th>";
@@ -251,7 +260,7 @@ class AgendaController extends Base {
             $this->strsub .= "<input type='hidden' id='txtsubno' name='txtsubno' value='".$terms["id"]."'>";
             $this->strsub .= "<input type='hidden' id='txtcode' name='txtsubcode' value='".$terms["top"]."'>";
             $this->strsub .= "<table style='width:100%;'><tr><td style='width:90%;padding:0 em;'>".$topic."</td>";
-            $this->strsub .= "<td style='width:10%;text-align:center;'>";
+            $this->strsub .= "<td style='width:5%;text-align:center;'>";
             $this->strsub .= "<a href='#edit_sub_modal' onclick='setedit_sub(\"" . $terms["id"] . "\");' rel='modal:open'>".$terms["title"]."<span style='cursor:pointer;' title='edit' class='fa fa-pencil'></span></a>";
             $this->strsub .= "</td>";
             $this->strsub .= "<td style='width:10%;text-align:center;'>";
@@ -349,35 +358,34 @@ class AgendaController extends Base {
             if(!empty($_POST["txt_edit_root_link"])){
                 $link = $_POST["txt_edit_root_link"];
               }else{
-                $errors ="กรุณาระบุlink";
+                $errors ="กรุณาระบุ link";
               }   
            // $link = $_POST['txt_edit_root_link'];
         }else if($type=='3'){
 
-            $file_size = $_FILES['txtfile']['size'];
+            $file_size = $_FILES['txt_edit_root_file']['size'];
             $hdnfile =$_POST["txt_hdn_edit_root_file"];
 
-            if ($file_size > 0) {
+            if ($file_size > 0){
+
                 if(!empty($hdnfile)){
                     if(file_exists("./storage/agenda/".$hdnfile)){
                         unlink("./storage/agenda/".$hdnfile);
                     }
                 }
 
-                $extension = pathinfo($_FILES['txtfile']['name'], PATHINFO_EXTENSION);
+                $extension = pathinfo($_FILES['txt_edit_root_file']['name'], PATHINFO_EXTENSION);
               
                 $file_name = rand().".".$extension;
-                $file_size = $_FILES['txtfile']['size'];
-                $file_tmp = $_FILES['txtfile']['tmp_name'];
-                $file_type = $_FILES['txtfile']['type'];
+                $file_size = $_FILES['txt_edit_root_file']['size'];
+                $file_tmp = $_FILES['txt_edit_root_file']['tmp_name'];
+                $file_type = $_FILES['txt_edit_root_file']['type'];
                 move_uploaded_file($file_tmp, "./storage/agenda/" . $file_name);   
                 $link = $file_name;                   
+            }else if(($file_size<=0)&&(!empty($hdnfile))){
+                $link = $hdnfile;   
             }else{
-                if(!empty($hdnfile)){
-                    $link = $hdnfile;
-                }else{
-                $errors = 'File is empty'; 
-                } 
+                $errors = 'กรุณาระบุ File'; 
             }
         }
 
@@ -410,7 +418,7 @@ class AgendaController extends Base {
                 }                
             }else if ($type == '3'){
                     $file_size = $_FILES['txt_edit_sub_file']['size'];
-                    $hdnfile =$_POST["txthdnsubfile"];
+                    $hdnfile =$_POST["txt_hdn_edit_sub_file"];
 
                     if ($file_size > 0) {
                         if(!empty($hdnfile)){
@@ -427,12 +435,10 @@ class AgendaController extends Base {
                         $file_type = $_FILES['txt_edit_sub_file']['type'];
                         move_uploaded_file($file_tmp, "./storage/agenda/" . $file_name);   
                         $link = $file_name;                   
+                    }else if(($file_size<=0)&&(!empty($hdnfile))){
+                        $link = $hdnfile;   
                     }else{
-                        if(!empty($hdnfile)){
-                            $link = $hdnfile;
-                        }else{
-                        $errors = 'File is empty'; 
-                        } 
+                        $errors = 'กรุณาระบุ File'; 
                     }
             }
 
