@@ -1,0 +1,47 @@
+label span {
+    font-size:10pt;
+  }
+  label.error {
+      color: red;
+      font-size:10pt;
+      display: block;
+      margin-top: 5px;
+  }
+  input.error {
+      border: 1px dashed red;
+      font-weight: 300;
+      color: red;
+  }
+  
+   .success{
+          width:90%;
+          background-color:#D4EFDF;
+          border:1px solid green;
+          border-radius:10px;
+          padding:0.5em;
+          margin:0 auto;
+          text-align:center;
+          margin-top:50px;
+      }
+  
+      .fail{
+      
+          width:90%;
+          background-color:#FDEDEC;
+          border:1px solid red;
+          border-radius:10px;
+          padding:1em;
+          margin:0 auto;
+          text-align:center;
+          margin-top:50px;
+          
+      }
+  
+  
+      @import url('https://fonts.googleapis.com/css?family=Poppins');
+  
+  /* BASIC */
+  
+  
+  
+  

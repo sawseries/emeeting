@@ -254,12 +254,17 @@ class AgendaController extends Base {
                 }else if($terms["type"]=='2'){
                     $topic = "<a href='".$terms["file"]."' target='_blank'>".$terms["topic"]."</a>";
                 }else if($terms["type"]=='3'){
-                    $topic = "<a href='./storage/agenda/".$terms["file"]."' target='_blank' style='float:left;'>".$terms["topic"]."</a><img src='./assets/image/file_icon.jpg' style='width:20px;float:left;'>";
+                    $topic = "<a href='./storage/agenda/".$terms["file"]."' target='_blank' style='float:left;'>".$terms["topic"]."</a>";
                 }            
             $this->strsub .= "<li class='ui-state-default' style='padding: 0.6em;'>";
             $this->strsub .= "<input type='hidden' id='txtsubno' name='txtsubno' value='".$terms["id"]."'>";
             $this->strsub .= "<input type='hidden' id='txtcode' name='txtsubcode' value='".$terms["top"]."'>";
-            $this->strsub .= "<table style='width:100%;'><tr><td style='width:90%;padding:0 em;'>".$topic."</td>";
+            $this->strsub .= "<table style='width:100%;'><tr><td style='width:90%;padding:0 em;'>";
+            $this->strsub .= "<div style='width:90%;float:left;'>".$topic."</div>";
+            if($terms["type"]=='3'){ 
+            $this->strsub .= "<div style='width:10%;float:left;'><a title='".$terms["file"]."' target='_blank' href='./storage/agenda/".$terms["file"]."' target='_blank' style='float:left;'><img src='./assets/image/file_icon.jpg' style='width:20px;float:left;'></a></div>";  
+            }
+            $this->strsub .= "</td>";    
             $this->strsub .= "<td style='width:5%;text-align:center;'>";
             $this->strsub .= "<a href='#edit_sub_modal' onclick='setedit_sub(\"" . $terms["id"] . "\");' rel='modal:open'>".$terms["title"]."<span style='cursor:pointer;' title='edit' class='fa fa-pencil'></span></a>";
             $this->strsub .= "</td>";

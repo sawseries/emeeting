@@ -10,30 +10,9 @@ require_once './layouts/header.php';
   <link href="./assets/css/editor.css?key=<?php echo time(); ?>" rel="stylesheet" />
   <link href="./assets/css/register.css?key=<?php echo time(); ?>" rel="stylesheet" />
   <script type="text/javascript" src="./front/register_control.js?key=<?php echo time(); ?>"></script>
-<script>
 
+  <link href="./assets/css/input.css?key=<?php echo time(); ?>" rel="stylesheet" />
 
-
-</script>
-
-<style type='text/css'>
-
-label span {
-  font-size:10pt;
-}
-label.error {
-    color: red;
-    font-size:10pt;
-    display: block;
-    margin-top: 5px;
-}
-input.error {
-    border: 1px dashed red;
-    font-weight: 300;
-    color: red;
-}
-
-</style>
 
 <div class="content" style='padding:0;'>
 
@@ -52,43 +31,43 @@ input.error {
                     </tr>
                     <tr>
                         <td style="padding-left:40px;width:20%;">ชื่อ </td>
-                        <td style=""><input type="text" class="form-control" id="firstname" name="firstname" required></td>
+                        <td style=""><input type="text" class="fadeIn" id="firstname" name="firstname" required></td>
                     </tr>
                     <tr>
                         <td style="padding-left:40px;">นามสกุล </td>
-                        <td style=""><input type="text" class="form-control" id="lastname" name="lastname" required></td>
+                        <td style=""><input type="text" class="fadeIn" id="lastname" name="lastname" required></td>
                     </tr>
                     <tr>
                         <td style="padding-left:40px;">หน่วยงาน </td>
-                        <td style=""><input type="text" class="form-control" id="department" name="department" required></td>
+                        <td style=""><input type="text" class="fadeIn" id="department" name="department" required></td>
                     </tr>
                     <tr>
                         <td style="padding-left:40px;">Email </td>
-                        <td style=""><input type="text" class="form-control" id="email" name="email" required></td>
+                        <td style=""><input type="text" class="fadeIn" id="email" name="email" required></td>
                     </tr>
                     <tr>
                         <td style="padding-left:40px;">Line </td>
-                        <td style=""><input type="text" class="form-control" id="line" name="line" required></td>
+                        <td style=""><input type="text" class="fadeIn" id="line" name="line" required></td>
                     </tr>
                     <tr>
                         <td style="padding-left:40px;">เบอร์โทรศัพท์ </td>
-                        <td style=""><input type="text" class="form-control" id="phone" name="phone" required></td>
+                        <td style=""><input type="text" class="fadeIn" id="phone" name="phone" required></td>
                     </tr>
                     <tr>
                         <td style="padding-left:40px;">ตำแหน่ง </td>
-                        <td style=""><input type="text" class="form-control" id="position" name="position" required></td>
+                        <td style=""><input type="text" class="fadeIn" id="position" name="position" required></td>
                     </tr>
                     <tr>
                         <td style="padding-left:40px;">Username </td>
-                        <td style=""><input type="text" class="form-control" id="username" name="username" required></td>
+                        <td style=""><input type="text" class="fadeIn" id="username" name="username" required></td>
                     </tr>
                     <tr>
                         <td style='padding-left:40px;'>Password </td>
-                        <td><input type="password" class="form-control" id="password" name="password" required></td>
+                        <td><input type="password" class="fadeIn" id="password" name="password" required></td>
                     </tr>
                     <tr>
                         <td style='padding-left:40px;'>Confirm-Password </td>
-                        <td><input type="password" class="form-control" id="confirm_password" name="confirm_password" required data-rule-password="true" data-rule-equalTo="#password"></td>
+                        <td><input type="password" class="fadeIn" id="confirm_password" name="confirm_password" required data-rule-password="true" data-rule-equalTo="#password"></td>
                     </tr>
                     <tr>
                         <td></td>
