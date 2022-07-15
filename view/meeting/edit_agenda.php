@@ -5,29 +5,11 @@ require_once './layouts/header_admin.php';
 <head>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
 <link href="./assets/css/editor.css?key=<?php echo time(); ?>" rel="stylesheet" />
+<link href="./assets/css/edit_agenda.css?key=<?php echo time(); ?>" rel="stylesheet" />
 <script type="text/javascript" src="./front/agenda_element.js?key=<?php echo time(); ?>"></script>
 <script type="text/javascript" src="./front/agenda_control.js?key=<?php echo time(); ?>"></script>
 
 <title>ระเบียบวาระการประชุม</title>
-<style type="text/css">
- .table_border
-  {
-      border: 1px solid #ccc;
-      border-collapse: collapse;
-  }  
-  .table_border th
-  {
-      background-color: #F7F7F7;
-      color: #333;
-      font-weight: bold;
-  }
-  .table_border th,td
-  {
-      width: 100px;
-      padding: 5px;
-      border: 1px solid #ccc;
-  }        
-    </style>
 
 <script>
 </script>

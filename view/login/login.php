@@ -24,8 +24,7 @@ require_once './layouts/header.php';
     <div class="wrapper fadeInDown">
   <div id="formContent">
     <!-- Tabs Titles -->
-    <h2 class="active"> Sign In </h2>
-    <h2 class="inactive underlineHover"><a href='./index.php?controller=Auth&action=getregister'>Sign Up</a></h2>
+    <h2 class="active"> E-Meeting</h2>
 
     <!-- Icon 
     <div class="fadeIn first">
@@ -42,6 +41,7 @@ require_once './layouts/header.php';
     <!-- Remind Passowrd -->
     <div id="formFooter">
       <a class="underlineHover" href="#">ลืมรหัสผ่าน</a>
+      <a href='./index.php?controller=Auth&action=getregister'>Register</a>
     </div>
 
   </div>

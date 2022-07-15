@@ -56,7 +56,7 @@ $(function () {
 }); 
 
 
-function elechecks(chk){
+function elechecks(chk){ //กำหนดเพื่อให้ไม่ update เมื่อ click
     elecheck = chk;
 }
 

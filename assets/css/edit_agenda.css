@@ -1,0 +1,17 @@
+.table_border
+  {
+      border: 1px solid #ccc;
+      border-collapse: collapse;
+  }  
+  .table_border th
+  {
+      background-color: #F7F7F7;
+      color: #333;
+      font-weight: bold;
+  }
+  .table_border th,td
+  {
+      width: 100px;
+      padding: 5px;
+      border: 1px solid #ccc;
+  }        

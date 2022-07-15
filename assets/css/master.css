@@ -721,6 +721,11 @@ body {
         font-family: 'Prompt', sans-serif;
     }
 
+
+    .modal-content {
+      margin:0.5em;
+      width:auto;
+    }
    
 
     .display{
@@ -795,6 +800,10 @@ body {
 /*mobile*/
 @media screen and (max-width: 600px) {
 
+  .modal-content {
+    margin:0.5em;
+    width:auto;
+  }
 
   .login_block{
     width:90%;margin: auto;
@@ -963,6 +972,11 @@ padding-top:0px;
       margin-top:0;
   }
 
+  .modal-content {
+    margin:0.5em;
+    width:auto;
+  }
+
 
 }
 
@@ -1096,7 +1110,10 @@ padding-top:0px;
       text-align: left;
     }
   
-
+    .modal-content {
+      margin:0.5em;
+      width:auto;
+    }
 
     
 }
@@ -1225,11 +1242,14 @@ padding-top:0px;
         width: 100%;
         text-align: left;
       }
-    
+      .modal-content {
+        margin:0.5em;
+        width:auto;
+      }
 
 }
 
-
+/*ipad*/
 
 @media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait) {
 
@@ -1311,6 +1331,12 @@ padding-top:0px;
   
       .visible{
         visibility: hidden;
+      }
+
+
+      .modal-content {
+        margin:0.5em;
+        width:auto;
       }
 
 }
@@ -1396,6 +1422,11 @@ padding-top:0px;
         display: block;
         width: 100%;
         text-align: left;
+      }
+
+      .modal-content {
+        margin:0.5em;
+        width:auto;
       }
 
 }

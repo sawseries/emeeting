@@ -45,7 +45,7 @@ class AdminController extends Base {
             . "start_date='" . $_POST["txtstartdate"] . "',time_start='" . $_POST["txttimestart"] . "',"
             . "end_date='" . $_POST["txtenddate"] . "',time_end='" . $_POST["txttimeend"] . "',"
             . "room='" . $_POST["txtroom"] . "',active='0',"
-            . "link='" . $link . "',doctopic_text='" . $_POST["txtdoctopic_text"] . "',detail='" . $_POST["txtdetail"] . "',user='" . $_SESSION["user"] . "',ip='" . Base::getIP() . "'";
+            . "link='" . $link . "',doctopic_text='" . $_POST["txtdoctopic_text"] . "',detail='" . $_POST["txtdetail"] . "',user='" . $_SESSION["user"] . "',ip='" . Base::ip() . "'";
             //echo $sql;
             $insert = Base::query($sql)->execute();
         }
@@ -78,7 +78,7 @@ class AdminController extends Base {
             . "start_date='" . $_POST["txtstartdate"] . "',time_start='" . $_POST["txttimestart"] . "',"
             . "end_date='" . $_POST["txtenddate"] . "',time_end='" . $_POST["txttimeend"] . "',"
             . "room='" . $_POST["txtroom"] . "',active='0',"
-            . "link='" . $filename . "',doctopic_text='',detail='',user='" . $_SESSION["user"] . "',ip='" . Base::getIP() . "'";
+            . "link='" . $filename . "',doctopic_text='',detail='',user='" . $_SESSION["user"] . "',ip='" . Base::ip() . "'";
             $insert = Base::query($sql)->execute();
             Redirect::para("Admin", "edit_report", array("code" => $code)); 
             }
@@ -138,7 +138,7 @@ class AdminController extends Base {
             $sql = "insert into meeting_term "
                     . "set code='" . $code . "',title='".$_POST["txttitle"]."',topic='" . $_POST["txttopic"] . "',no='" . $no . "',"
                     . "top='0',doc_code='" . $_POST["hdndoc_code"] . "',type='" . $_POST["rdo_type"] . "',"
-                    . "file='" . $txt_type . "',ip='" . Base::getIP() . "'";
+                    . "file='" . $txt_type . "',ip='" . Base::ip() . "'";
             $insert = Base::query($sql)->insert();
             
             echo true;
@@ -190,7 +190,7 @@ class AdminController extends Base {
             $sql = "insert into meeting_term "
                     . "set code='" . $code . "',title='',topic='" . $_POST["txttopic"] . "',no='" . $no["mx"] . "',"
                     . "top='" . $top . "',doc_code='" . $_POST["hdndoc_code"] . "',type='" . $_POST["rdo_type"] . "',"
-                    . "file='" . $txt_type . "',ip='" . Base::getIP() . "'";
+                    . "file='" . $txt_type . "',ip='" . Base::ip() . "'";
             $insert = Base::query($sql)->insert();
             print(true);
             }else{

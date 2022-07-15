@@ -131,23 +131,10 @@ class Base {
     public function links() {
 
         $page = 1;
-      
-    
 
         if (isset($_GET["page"])) {
             $page = $_GET["page"];
         }
-
-      /*  if ($page != 1) {
-            $start = (($page - 1) * $limit) + 1;
-            $end = $start + $limit;
-        }
-
-        $sql = $this->sql;
-        if(isset($_GET["page"])){
-            $page = $_GET["page"];
-        }*/
-        
 
         $re = $this->getInstance()->query($this->sql_before);
         $re->fetch_row();

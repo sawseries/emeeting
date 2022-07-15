@@ -27,7 +27,7 @@ class ReportController extends Base {
     }
 
     public function insert_agenda() {
-        $code = self::gettopcode();
+        $code = topcode();
         $check = Base::query("select count(*) as cnt from meeting where code = '" . $code . "'")->one();
         $file_name = "";
         //echo $check['cnt'];
@@ -45,7 +45,7 @@ class ReportController extends Base {
             . "start_date='" . $_POST["txtstartdate"] . "',time_start='" . $_POST["txttimestart"] . "',"
             . "end_date='" . $_POST["txtenddate"] . "',time_end='" . $_POST["txttimeend"] . "',"
             . "room='" . $_POST["txtroom"] . "',active='0',"
-            . "link='" . $link . "',doctopic_text='" . $_POST["txtdoctopic_text"] . "',detail='" . $_POST["txtdetail"] . "',user='" . $_SESSION["user"] . "',ip='" . Base::getIP() . "'";
+            . "link='" . $link . "',doctopic_text='" . $_POST["txtdoctopic_text"] . "',detail='" . $_POST["txtdetail"] . "',user='" . $_SESSION["user"] . "',ip='" . Base::ip() . "'";
             //echo $sql;
             $insert = Base::query($sql)->execute();
         }
@@ -55,7 +55,7 @@ class ReportController extends Base {
 
     public function insert_report() {
 
-        $code = self::gettopcode();
+        $code = topcode();
         $check = Base::query("select count(*) as cnt from meeting where code = '" . $code . "'")->one();
         $file_name = "";
         $filename='';
@@ -78,7 +78,7 @@ class ReportController extends Base {
             . "start_date='" . $_POST["txtstartdate"] . "',time_start='" . $_POST["txttimestart"] . "',"
             . "end_date='" . $_POST["txtenddate"] . "',time_end='" . $_POST["txttimeend"] . "',"
             . "room='" . $_POST["txtroom"] . "',active='0',"
-            . "link='" . $filename . "',doctopic_text='',detail='',user='" . $_SESSION["user"] . "',ip='" . Base::getIP() . "'";
+            . "link='" . $filename . "',doctopic_text='',detail='',user='" . $_SESSION["user"] . "',ip='" . Base::ip() . "'";
             $insert = Base::query($sql)->execute();
             Redirect::para("Admin", "edit_report", array("code" => $code)); 
             }
@@ -90,7 +90,7 @@ class ReportController extends Base {
 
     public function insert_root() {
 
-        $code = self::getsubcode();
+        $code = subcode();
         $check = Base::query("select count(*) as cnt from meeting where code = '" . $code . "'")->one();
         $file_name = "";
         $type = $_POST["rdo_type"];
@@ -138,7 +138,7 @@ class ReportController extends Base {
             $sql = "insert into meeting_term "
                     . "set code='" . $code . "',title='".$_POST["txttitle"]."',topic='" . $_POST["txttopic"] . "',no='" . $no . "',"
                     . "top='0',doc_code='" . $_POST["hdndoc_code"] . "',type='" . $_POST["rdo_type"] . "',"
-                    . "file='" . $txt_type . "',ip='" . Base::getIP() . "'";
+                    . "file='" . $txt_type . "',ip='" . Base::ip() . "'";
             $insert = Base::query($sql)->insert();
             
             echo true;
@@ -154,7 +154,7 @@ class ReportController extends Base {
     }
 
     public function insert_sub() {
-        $code = self::getsubcode();
+        $code = subcode();
         $top = $_POST["hdnsubtop"];
         $check = Base::query("select count(*) as cnt from meeting where code = '" . $code . "'")->one();
         $file_name = "";
@@ -190,7 +190,7 @@ class ReportController extends Base {
             $sql = "insert into meeting_term "
                     . "set code='" . $code . "',title='',topic='" . $_POST["txttopic"] . "',no='" . $no["mx"] . "',"
                     . "top='" . $top . "',doc_code='" . $_POST["hdndoc_code"] . "',type='" . $_POST["rdo_type"] . "',"
-                    . "file='" . $txt_type . "',ip='" . Base::getIP() . "'";
+                    . "file='" . $txt_type . "',ip='" . Base::ip() . "'";
             $insert = Base::query($sql)->insert();
             print(true);
             }else{
@@ -339,24 +339,9 @@ class ReportController extends Base {
         return true;
     }
 
-    public function gettopcode() {
-        $top = Base::query("select max(id)+1 as mx from meeting")->one();
-       
-        if(empty($top["mx"])){
-            return "T1";
-       }else{
-           return "T" . $top["mx"];     
-       }
-    }
+  
 
-    public function getsubcode() {
-        $sub = Base::query("select max(id)+1 as mx from meeting_term")->one();
-        if(empty($sub["mx"])){
-             return "S1";
-        }else{
-            return "S" . $sub["mx"];     
-        }
-    }
+
 
     public function showdoc_top() {
         $top = Base::query("SELECT * FROM meeting where code='" . $_GET["code"] . "'")

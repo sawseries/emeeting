@@ -75,7 +75,7 @@ class MasterController extends Base {
                 $this->strsub .= "<tr><td style='vertical-align:top;padding-left:10px;'>".$terms['title']."</td>";
                 $this->strsub .= "<td style='width:80%;padding-left: 0 em;vertical-align:top;'>";
                 $this->strsub .= "".$topic."";    
-                $this->strsub .= $this->getsubterm($terms["code"]);               
+                $this->strsub .= $this->getsubterm($terms["code"],0);               
                 $this->strsub .= "</td>";
                 $this->strsub .= "</tr>";
                 $i++;
@@ -86,7 +86,8 @@ class MasterController extends Base {
     }
 
 
-    public function getsubterm($code) {
+
+    public function getsubterm($code,$padding) {
         $strsub="";
         $term = Base::query("select * from meeting_term where top = '" . $code . "' order by no asc")->fetchAll();
         $i=0;
@@ -106,6 +107,8 @@ class MasterController extends Base {
                 $this->strsub .= "<td style='verticle-align:top;'>".$terms["title"]."</td>";
                 $this->strsub .= "<td style='verticle-align:top;'>".$topic."</td>";
                 $this->strsub .= "</tr>";
+
+                $this->strsub .= $this->getsubterm($terms["code"],($padding+0.5));
                 $i++;
             }
         }

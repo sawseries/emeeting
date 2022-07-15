@@ -18,7 +18,7 @@ class AgendaController extends Base {
    
 
     public function insert_agenda() {
-        $code = self::gettopcode();
+        $code = topcode();
         $check = Base::query("select count(*) as cnt from meeting where code = '" . $code . "'")->one();
         $file_name = "";
         //echo $check['cnt'];
@@ -36,7 +36,7 @@ class AgendaController extends Base {
             . "start_date='" . $_POST["txtstartdate"] . "',time_start='" . $_POST["txttimestart"] . "',"
             . "end_date='" . $_POST["txtenddate"] . "',time_end='" . $_POST["txttimeend"] . "',"
             . "room='" . $_POST["txtroom"] . "',active='0',"
-            . "link='" . $link . "',doctopic_text='" . $_POST["txtdoctopic_text"] . "',detail='" . $_POST["txtdetail"] . "',user='" . $_SESSION["user"] . "',ip='" . Base::getIP() . "'";
+            . "link='" . $link . "',doctopic_text='" . $_POST["txtdoctopic_text"] . "',detail='" . $_POST["txtdetail"] . "',user='" . $_SESSION["user"] . "',ip='" . Base::ip() . "'";
             //echo $sql;
             $insert = Base::query($sql)->execute();
         }
@@ -46,7 +46,7 @@ class AgendaController extends Base {
 
     public function insert_root() {
 
-        $code = self::getsubcode();
+        $code = subcode();
         $check = Base::query("select count(*) as cnt from meeting where code = '" . $code . "'")->one();
         $file_name = "";
         $type = $_POST["rdo_type"];
@@ -94,7 +94,7 @@ class AgendaController extends Base {
             $sql = "insert into meeting_term "
                     . "set code='" . $code . "',title='".$_POST["txttitle"]."',topic='" . $_POST["txttopic"] . "',no='" . $no . "',"
                     . "top='0',doc_code='" . $_POST["hdndoc_code"] . "',type='" . $_POST["rdo_type"] . "',"
-                    . "file='" . $txt_type . "',ip='" . Base::getIP() . "'";
+                    . "file='" . $txt_type . "',ip='" . Base::ip() . "'";
             $insert = Base::query($sql)->insert();
             
             echo true;
@@ -110,7 +110,7 @@ class AgendaController extends Base {
     }
 
     public function insert_sub() {
-        $code = self::getsubcode();
+        $code = subcode();
         $top = $_POST["hdnsubtop"];
         $check = Base::query("select count(*) as cnt from meeting where code = '" . $code . "'")->one();
         $file_name = "";
@@ -146,7 +146,7 @@ class AgendaController extends Base {
             $sql = "insert into meeting_term "
                     . "set code='" . $code . "',title='',topic='" . $_POST["txttopic"] . "',no='" . $no["mx"] . "',"
                     . "top='" . $top . "',doc_code='" . $_POST["hdndoc_code"] . "',type='" . $_POST["rdo_type"] . "',"
-                    . "file='" . $txt_type . "',ip='" . Base::getIP() . "'";
+                    . "file='" . $txt_type . "',ip='" . Base::ip() . "'";
             $insert = Base::query($sql)->insert();
             print(true);
             }else{
@@ -223,9 +223,9 @@ class AgendaController extends Base {
                     }
                     $this->strsub .= "</div>";  
                 
-                $this->strsub .= "<div style='width:100%;'>";     
+                
                 $this->strsub .= $this->getsubterm_edit($terms["code"]);
-                $this->strsub .= "</div>";              
+                         
                 $this->strsub .= "</td>";             
                 $this->strsub .= "<th style='width:2%;padding:0.1em;vertical-align:top;'><a title='เพิ่ม' onclick='setsubtop(\"" . $terms["code"] . "\");' class='btn btn-primary' href='#sub_modal' rel='modal:open'><span class='fa fa-plus'></span></a></th>";
                 $this->strsub .= "<th style='width:2%;padding:0.1em;vertical-align:top;'><a onclick='seteditroot(\"" . $terms["id"] . "\");' class='btn btn-default' href='#edit_root_modal' rel='modal:open'><span class='fa fa-pencil-square-o'></span></a></th>";
@@ -246,6 +246,7 @@ class AgendaController extends Base {
         $padding=0;
 
         if ($term->num_rows > 0) {
+            $this->strsub .= "<div style='width:100%;'>";     
             $this->strsub .= "<ul id='sortable_".$this->j."' style='list-style:none;width:100%;'>";
             foreach ($term as $terms) {            
                 $topic = '';
@@ -266,15 +267,28 @@ class AgendaController extends Base {
             }
             $this->strsub .= "</td>";    
             $this->strsub .= "<td style='width:5%;text-align:center;'>";
+            $this->strsub .= "<a href='#sub_modal' title='เพิ่ม' onclick='setsubtop(\"" . $terms["code"] . "\");' rel='modal:open'>".$terms["title"]."<span style='cursor:pointer;' title='edit' class='fa fa-plus'></span></a>";
+            $this->strsub .= "</td>";
+            $this->strsub .= "<td style='width:5%;text-align:center;'>";
             $this->strsub .= "<a href='#edit_sub_modal' onclick='setedit_sub(\"" . $terms["id"] . "\");' rel='modal:open'>".$terms["title"]."<span style='cursor:pointer;' title='edit' class='fa fa-pencil'></span></a>";
             $this->strsub .= "</td>";
             $this->strsub .= "<td style='width:10%;text-align:center;'>";
             $this->strsub .= "<a  onclick='deleteterm(\"" . $terms["code"] . "\");'><span style='color:red;cursor:pointer;' title='ลบ' class='fa fa-trash'></span></a>";
             $this->strsub .= "</td></tr></table></li>";    
+            $this->j++;
+            $this->strsub .= $this->getsubterm_edit($terms["code"]);
+  
+
             }
             $this->strsub .= "</ul>";
-            $this->j++;
+       
+            
+      
+            
+            
         }
+
+       
         return $strsub;
     }
 
@@ -296,24 +310,7 @@ class AgendaController extends Base {
         return true;
     }
 
-    public function gettopcode() {
-        $top = Base::query("select max(id)+1 as mx from meeting")->one();
-       
-        if(empty($top["mx"])){
-            return "T1";
-       }else{
-           return "T" . $top["mx"];     
-       }
-    }
-
-    public function getsubcode() {
-        $sub = Base::query("select max(id)+1 as mx from meeting_term")->one();
-        if(empty($sub["mx"])){
-             return "S1";
-        }else{
-            return "S" . $sub["mx"];     
-        }
-    }
+    
 
     public function showdoc_top() {
         $top = Base::query("SELECT * FROM meeting where code='" . $_GET["code"] . "'")
@@ -483,106 +480,7 @@ class AgendaController extends Base {
 
 
 
-   //var $strsub;
-
-   public function getterm($code) {
-       $term = Base::query("select * from meeting_term where doc_code = '" . $code . "' and top='0' order by no asc")
-               ->fetchAll();                        
-       $padding=0;
-       $strsub="";
-       $i=0;       
-       if ($term->num_rows > 0) {
-           foreach ($term as $terms) {
-               $topic = '';
-               if ($terms["type"] == "1") {//text
-                   $topic = $terms["topic"];
-               }else if ($terms["type"] == "2") {//link 
-                   $topic = "<a href='".$terms["file"]."' target='blank'>".$terms["topic"]."</a>";
-               }else if ($terms["type"] == "3") {//file 
-               //$topic = "<a href='./index.php?controller=Master&action=showdoc&code=".$terms["code"]."' target='blank'>" . $terms["topic"] . "</a>";
-                   $topic = "<a href='./storage/agenda/".$terms["file"]."' target='blank'>" . $terms["topic"] . "</a>";
-               }
-               $this->strsub .= "<tr><td style='vertical-align:top;padding-left:10px;'>".$terms['title']."</td>";
-               $this->strsub .= "<td style='width:80%;padding-left: 0 em;vertical-align:top;'>";
-               $this->strsub .= "".$topic."";    
-               $this->strsub .= $this->getsubterm($terms["code"]);               
-               $this->strsub .= "</td>";
-               $this->strsub .= "</tr>";
-               $i++;
-           }
-       }
-
-       return $this->strsub;
-   }
-
-
-   public function getsubterm($code) {
-       $strsub="";
-       $term = Base::query("select * from meeting_term where top = '" . $code . "' order by no asc")->fetchAll();
-       $i=0;
-       $padding=20;
-       if ($term->num_rows > 0) {
-           foreach ($term as $terms) {
-               $topic = '';
-               if ($terms["type"] == "1") {//text
-                   $topic = $terms["topic"];
-               } else if ($terms["type"] == "2") {//link 
-                   $topic = "<a href='".$terms["file"]."' target='blank'>".$terms["topic"]."</a>";
-               } else if ($terms["type"] == "3") {//file 
-                   //$topic = "<a href='./index.php?controller=Master&action=showdoc&code=".$terms["code"]."' target='blank'>" . $terms["topic"] . "</a>";
-                   $topic = "<a href='./storage/agenda/".$terms["file"]."' target='blank'>" . $terms["topic"] . "</a>";
-               }
-               $this->strsub .= "<tr>";
-               $this->strsub .= "<td style='verticle-align:top;'>".$terms["title"]."</td>";
-               $this->strsub .= "<td style='verticle-align:top;'>".$topic."</td>";
-               $this->strsub .= "</tr>";
-               $i++;
-           }
-       }
-       return $strsub;
-   }
-
-   public $strsub_mobile;
-
-   public function getterm_mobile($code) {
-       $term = Base::query("select * from meeting_term where doc_code = '" . $code . "' and top='0' order by no asc")
-               ->fetchAll();
-       if ($term->num_rows > 0) {
-           foreach ($term as $terms) {
-               $this->strsub_mobile .= "<tr>" . "<td style='width:40%;verticle-align:top;'>" . $terms["title"] . "</td>"
-                       . "<td style='verticle-align:top;'>" . $terms["topic"] . "</td>" . "</tr>";
-               $this->strsub_mobile .=  $this->getsubterm_mobile($terms["code"]);
-           }
-       }
-       return $this->strsub_mobile;
-   }
-
-   public function getsubterm_mobile($code) {
-       $strsub_mobile="";
-       $term = Base::query("select * from meeting_term where top = '" . $code . "' order by no desc")->fetchAll();
-       $i=0;
-       $padding=20;
-       if ($term->num_rows > 0) {
-           foreach ($term as $terms) {
-               $this->strsub_mobile .= "<tr>";
-               $this->strsub_mobile .= "<td style='verticle-align:top;'>".$terms["title"]."</td>";
-               
-               if ($terms["type"] == "1") {//text
-                   $this->strsub_mobile .= "<td style='width:60%;padding-left:".$padding." px;verticle-align:top;'>".$terms["topic"]."</td>";
-               } else if ($terms["type"] == "2") {//link 
-                   $this->strsub_mobile .= "<td style='width:60%;padding-left:".$padding." px;verticle-align:top;'><a href='".$terms["file"]."' target='blank'>".$terms["topic"]."</a></td>";
-               } else if ($terms["type"] == "3") {//file 
-                   $this->strsub_mobile .= "<td style='width:60%;padding-left:".$padding." px;verticle-align:top;'><a href='./index.php?controller=Master&action=showdoc&code=".$terms["code"]."' target='blank'>" . $terms["topic"] . "</a></td>";
-               }
-               $this->strsub_mobile .= "</tr>";
-               $i++;
-           }
-       }
-       return $strsub_mobile;
-
-   }
-
-   
+  
 
    public function getroot_edit(){
 
