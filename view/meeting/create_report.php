@@ -3,14 +3,22 @@ require_once './layouts/header_admin.php';
 ?>
 
 <head>
-<script src="./front/create.js?key=<?php echo time(); ?>"></script>
+
+<link href="./assets/css/login.css?key=<?php echo time(); ?>" rel="stylesheet" /> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $("#frm_report").validate();
+    });
+
+</script>
 </head>
 
 <!-- Page content-->
 <div class="container">
 <div class="row">
     <div class="box white" style="padding:2em;">
-        <form action="./index.php?controller=Report&action=insert_report" method="post" enctype="multipart/form-data" />
+        <form id='frm_report' action="./index.php?controller=Report&action=insert_report" method="post" enctype="multipart/form-data" />
         <div class="row">
 
         <h4><b>รายงานการประชุม</b></h4>

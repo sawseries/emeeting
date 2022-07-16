@@ -8,7 +8,7 @@
         <div class="row">
             <!--Grid column-->
             <div class="col-lg-6 col-md-12 mb-4 mb-md-0" style="text-align:left;">
-                <table style="width:100%;border: none;" cellspacing="0" cellpadding="0" border="0">
+                <table style="width:100%;border-collapse: collapse;" cellspacing="0" cellpadding="0">
                     <tr>
                         <td style="vertical-align:top;text-align:center;width:20%;"><img src="./assets/image/psu1.png" style="width:200px;height:80px;"></td>
                         <td>

@@ -3,14 +3,22 @@ require_once './layouts/header_admin.php';
 ?>
 
 <head>
-<script src="./front/agenda_create.js?key=<?php echo time(); ?>"></script>
+<link href="./assets/css/login.css?key=<?php echo time(); ?>" rel="stylesheet" /> 
+<script src="./front/create_control.js?key=<?php echo time(); ?>"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $("#frm_agenda").validate();
+    });
+
+</script>
 </head>
 
 <!-- Page content-->
 <div class="container">
 <div class="row">
     <div class="box white" style="padding:2em;">
-        <form action="./index.php?controller=Agenda&action=insert_agenda" method="post" enctype="multipart/form-data" />
+        <form id='frm_agenda' action="./index.php?controller=Agenda&action=insert_agenda" method="post" enctype="multipart/form-data" />
         <div class="row">
 
             <h4><b>ระเบียบวาระการประชุม</b></h4>

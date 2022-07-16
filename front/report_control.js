@@ -14,7 +14,6 @@ function updates(fields,codes,parameter) {
                 data: {field: fields, value: values, code:codes},
                 success: function (data)
                 {
-            
                     if(data=='success'){
                        window.location.reload();
                     }

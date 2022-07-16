@@ -539,7 +539,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
     display: none;
   }
   
-  
+
+  .navbar_fiexdtop a:hover{
+    background-color: #56baed;
+  }
+
   .responsive {
     width: 100%;
     height: auto;
@@ -1090,6 +1094,8 @@ padding-top:0px;
       float: right;
       display: block;
     }
+
+ 
   
     .navbar_fiexdtop.responsive {position: relative;}
     .navbar_fiexdtop.responsive .icon {
@@ -1328,6 +1334,7 @@ padding-top:0px;
         text-align: left;
       }
     
+  
   
       .visible{
         visibility: hidden;

@@ -139,13 +139,31 @@ $(function () {
         items: 'tr:not(tr:first-child)',
         cursor: 'pointer',
         axis: 'y',
-        dropOnEmpty: false,
+        scroll: false,
+        placeholder: "sortable-placeholder",
+        dropOnEmpty: true,
+        
         start: function (e, ui) {
             ui.item.addClass("selected");
+            
+           /* var subcnt = $("#hdnsubcnt").val();
+            for (j = 0; j <= (subcnt - 1); j++) {
+            if (ui.item.is("#sorsubtable_"+j)) {
+                //alert(j);
+                $("#tblLocations").sortable("disable");
+                $(this).sortable("refresh");	// "refresh" of source sortable is required to make "disable" work!
+            }
+           }*/
         },
         stop: function (e, ui) {
+           // var subcnt = $("#hdnsubcnt").val();
             ui.item.removeClass("selected");
+           // var ids = $(this).closest('tr').find("td:eq(0) input").val();
+            //alert(ids);
+           // $("#tblLocations").sortable("disable");
         },
+
+
         update: function (event, ui) {
             var Newpos = ui.item.index();
             $(this).find("tr").each(function (index) {
@@ -169,7 +187,62 @@ $(function () {
             });
         }
     });
+
 });
+
+
+/*$(function () {
+    var subcnt = $("#hdnsubcnt").val();
+    for (j = 0; j <= (subcnt - 1); j++) {
+        $("#sorsubtable_" + j).sortable({
+
+           // $("#sorsubtable").sortable({
+            items: 'tr:not(tr:first-child)',
+            cursor: 'pointer',
+            axis: 'y',
+            dropOnEmpty: false,  
+            connectWith: 'ul',
+       
+            start: function (e, ui) {
+                ui.item.addClass("selected");
+            },
+            stop: function (e, ui) {
+                ui.item.removeClass("selected");
+            },
+            update: function (event, ui) {
+                var Newpos = ui.item.index();
+                $(this).find("tr").each(function (index) {
+ 
+                    var NewPosition = $("tr").index(this);
+                    var ids = $(this).closest('tr').find("td:eq(0) input").val();
+          
+                    if (ids) {
+                        $.ajax({
+                            url: "./index.php?controller=Agenda&action=update_row",
+                            type: "POST",
+                            data: { id: ids, no: NewPosition },
+                            success: function (data) {
+                            },
+                            error: function (xhr, desc, err) {
+                                alert("Err : "+err);
+                            }
+                        });
+                    }
+                });
+            }
+        });
+
+
+        $('td, th', "#sorsubtable_"+j).each(function () {
+       // $('td, th', "#sorsubtable").each(function () {
+            var cell = $(this);
+            cell.width(cell.width());
+        });
+        
+       // $("#sorsubtable_"+j+" tbody").sortable().disableSelection();
+
+    }
+});*/
 
 $(function () {
     var subcnt = $("#hdnsubcnt").val();

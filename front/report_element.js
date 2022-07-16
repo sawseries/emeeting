@@ -3,46 +3,14 @@ var control = '';
 var windows=0;
 var elecheck = false;
 
-//$(document).ready(start(lastcontrol,control,windows,elecheck));
 
 $(function () {   
     $(window).click(function (e) {
-        var target = e.target.id.toString();
-        var elementClassName = e.target.className.toString();  
 
           $(".form-control").click(function (e) {  
               elechecks(true);
           });
           
-        if(elecheck==false){    
-                if(target!==''){
-                    if(lastcontrol!==''){
-                    windows++;
-                       if(lastcontrol==control){
-                        hidelastcontrol(control);  
-                       }else{
-                        hidelastcontrol(lastcontrol);  
-                       }
-                    }else if((lastcontrol=='')&&(windows>1)){
-                    windows++;
-                    hideedit(control);
-                    }
-                }else{
-                    hideedit(control);
-                }
-        }else{
-          if(target==''){
-            if((control=='doctopic_text')||(control=='detail')){
-            //alert("target :"+ target + " control:"+control+" last:"+lastcontrol);
-            }else{
-              if(lastcontrol==''){
-                hideedit(control);
-              }else{
-                hidelastcontrol(lastcontrol);
-              }
-            }
-          }
-        }
     }); 
 }); 
 
@@ -51,9 +19,7 @@ function elechecks(chk){
     elecheck = chk;
 }
 
-//function start(lastcontrol,control,windows,elecheck){
-   // alert(last);
-//}
+
 
 function showedit(ele) {
     if(control != ''){lastcontrol = control;}
@@ -141,12 +107,7 @@ function setsubtop(code){
 
 
              function setsubedit(ids,title,topic,type,links){
-                alert("d");
-                alert(ids);
-                alert(title);
-                alert(topic);
-                alert(type);
-                alert(links);
+ 
 
                 $("#txttopic4").text(topic);
                 $("#editor_topic4").html(topic);

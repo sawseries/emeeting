@@ -35,6 +35,10 @@
   .dropdowns:hover .dropdown-contents {
     display: block;
   }
+
+  .btns:hover .dropdown-contents {
+    display: block;
+  }
   
   .btn:hover, .dropdown:hover {
     background-color: #0b7dda;

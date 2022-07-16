@@ -5,32 +5,12 @@ require_once './layouts/header_admin.php';
 <head>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
 <link href="./assets/css/editor.css?key=<?php echo time(); ?>" rel="stylesheet" />
+<script type="text/javascript" src="./front/control.js?key=<?php echo time(); ?>"></script>
 <script type="text/javascript" src="./front/report_element.js?key=<?php echo time(); ?>"></script>
 <script type="text/javascript" src="./front/report_control.js?key=<?php echo time(); ?>"></script>
-
+<link href="./assets/css/report.css?key=<?php echo time(); ?>" rel="stylesheet" />
 <title>รายงานการประชุม</title>
-<style type="text/css">
- .table_border
-  {
-      border: 1px solid #ccc;
-      border-collapse: collapse;
-  }  
-  .table_border th
-  {
-      background-color: #F7F7F7;
-      color: #333;
-      font-weight: bold;
-  }
-  .table_border th,td
-  {
-      width: 100px;
-      padding: 5px;
-      border: 1px solid #ccc;
-  }        
-
-
-  
-    </style>
+<style type="text/css"></style>
 
 <script>
 </script>
@@ -70,7 +50,7 @@ require_once './layouts/header_admin.php';
             <tr>
                 <td> ประเภทการประชุม </td>
                 <td>
-                    <div id="display_doc_type"><?=report($meeting["doc_type"]); ?></div>
+                    <div id="display_doc_type"><b><?=report($meeting["doc_type"]); ?></b></div>
                     <div id="control_doc_type" class="displaynone">
 <!--                        <textarea id="txt_edit_doc_type" name="txt_edit_doc_type" class="form-control"><?= $meeting["doc_type"]; ?></textarea>-->
                         <select id="txt_edit_doc_type" name="sle_edit_doc_type" class="form-control" onchange="updates('doc_type','<?= $meeting["code"]; ?>',this);">
@@ -142,7 +122,7 @@ require_once './layouts/header_admin.php';
                <tr>
                 <td>เอกสาร</td>
                 <td>
-                     <a href="./storage/report/<?=$meeting["link"];?>" target='_blank'><?=$meeting["link"];?></a> <a onclick="filetoggle();">แก้ไข</a>
+                     <a href="./storage/report/<?=$meeting["link"];?>" target='_blank'><?=$meeting["link"];?></a> <a onclick="filetoggle();" style='color:red;'><b>แก้ไข</b></a>
                    
                 </td>
                </tr>
@@ -154,6 +134,7 @@ require_once './layouts/header_admin.php';
                      <input type="hidden" id="hdnfile" name="hdnfile" value="<?=$meeting["link"];?>">
                      <input type="file" class="form-control" id="txtfile" name="txtfile" required>
                             <button type="submit" class="btn btn-info">save</button>
+                            <a class='btn btn-default' onclick="filetoggle();">cancel</a>
                     </form>
                 </td>
                </tr>

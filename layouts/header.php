@@ -45,7 +45,7 @@
     </head>
     <body>
     <div style="background-color:white;">
-<img src="./assets/image/header.png?key=<?php echo time(); ?>" style='width:100%;height:55px;'>
+<img src="./assets/image/header.png?key=<?php echo time(); ?>" style='width:100%;height:90px;'>
 </div>
     <div class="navbar_fiexdtop" id="navbar_fiexdtop">
  

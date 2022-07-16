@@ -4,9 +4,14 @@ require_once './app/Base.php';
 
 class MasterController extends Base {
 
+    var $strsub;
+    public $strsub_mobile;
+    
     public function __construct() {
         // Master::limit(10);  //จำนวนการแสดงผลต่อหน้า
     }
+
+
 
     public function index() {
         if(isset($_SESSION["Auth"])==true){
@@ -53,8 +58,7 @@ class MasterController extends Base {
         Redirect::view("meeting/detail", array("meeting" => $meeting, "terms" => $terms, "terms_mobile" => $terms_mobile));
     }
 
-    var $strsub;
-
+  
     public function getterm($code) {
         $term = Base::query("select * from meeting_term where doc_code = '" . $code . "' and top='0' order by no asc")
                 ->fetchAll();                        
@@ -72,8 +76,8 @@ class MasterController extends Base {
                 //$topic = "<a href='./index.php?controller=Master&action=showdoc&code=".$terms["code"]."' target='blank'>" . $terms["topic"] . "</a>";
                     $topic = "<a href='./storage/agenda/".$terms["file"]."' target='blank'>" . $terms["topic"] . "</a>";
                 }
-                $this->strsub .= "<tr><td style='vertical-align:top;padding-left:10px;'>".$terms['title']."</td>";
-                $this->strsub .= "<td style='width:80%;padding-left: 0 em;vertical-align:top;'>";
+                $this->strsub .= "<tr><td style='vertical-align:top;width:20%;padding-left:0;'>".$terms['title']."</td>";
+                $this->strsub .= "<td style='width:80%;vertical-align:top;'>";
                 $this->strsub .= "".$topic."";    
                 $this->strsub .= $this->getsubterm($terms["code"],0);               
                 $this->strsub .= "</td>";
@@ -91,7 +95,7 @@ class MasterController extends Base {
         $strsub="";
         $term = Base::query("select * from meeting_term where top = '" . $code . "' order by no asc")->fetchAll();
         $i=0;
-        $padding=20;
+      
         if ($term->num_rows > 0) {
             foreach ($term as $terms) {
                 $topic = '';
@@ -105,17 +109,17 @@ class MasterController extends Base {
                 }
                 $this->strsub .= "<tr>";
                 $this->strsub .= "<td style='verticle-align:top;'>".$terms["title"]."</td>";
-                $this->strsub .= "<td style='verticle-align:top;'>".$topic."</td>";
+                $this->strsub .= "<td style='verticle-align:top;padding-left:".$padding."px;'>".$topic."</td>";
                 $this->strsub .= "</tr>";
 
-                $this->strsub .= $this->getsubterm($terms["code"],($padding+0.5));
+                $this->strsub .= $this->getsubterm($terms["code"],($padding+40));
                 $i++;
             }
         }
         return $strsub;
     }
 
-    public $strsub_mobile;
+ 
 
     public function getterm_mobile($code) {
         $term = Base::query("select * from meeting_term where doc_code = '" . $code . "' and top='0' order by no asc")
@@ -162,7 +166,6 @@ class MasterController extends Base {
 
     }
 
-   
 
   
 

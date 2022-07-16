@@ -6,13 +6,24 @@ require_once './layouts/header_admin.php';
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
 <link href="./assets/css/editor.css?key=<?php echo time(); ?>" rel="stylesheet" />
 <link href="./assets/css/edit_agenda.css?key=<?php echo time(); ?>" rel="stylesheet" />
+<script type="text/javascript" src="./front/control.js?key=<?php echo time(); ?>"></script>
 <script type="text/javascript" src="./front/agenda_element.js?key=<?php echo time(); ?>"></script>
 <script type="text/javascript" src="./front/agenda_control.js?key=<?php echo time(); ?>"></script>
 
-<title>ระเบียบวาระการประชุม</title>
 
+<title>ระเบียบวาระการประชุม</title>
+<style>
+
+.selected{
+    width:100%;
+}
+
+</style>
 <script>
+    
 </script>
+
+
 </head>
 <body>
 <!-- Page content-->
@@ -27,7 +38,7 @@ require_once './layouts/header_admin.php';
             <a href="./index.php?controller=Admin&action=admin_index" class="btn btn-primary" style="width:100px;height:40px;"> 
                     <i class="fa fa-reply-all" style="font-size:14px;"></i> ย้อนกลับ
                     </a>
-                    <a target="_blank" href="./index.php?controller=Agenda&action=detail&code=<?=$meeting["code"];?>" class="btn btn-primary" style="width:100px;height:40px;"> 
+                    <a target="_blank" href="./index.php?controller=Master&action=detail&code=<?=$meeting["code"];?>" class="btn btn-primary" style="width:100px;height:40px;"> 
                     <i class="fa fa-search" style="font-size:14px;"></i> preview
                 </a>
             </div>
@@ -163,25 +174,41 @@ require_once './layouts/header_admin.php';
                             </tr>
                         </table>
                     </td>
-                </tr>    
-                <tr id="tr_type_display">
+                </tr>  
+                
+
+
+                <?php if($meeting["type"]!='1'){ ?>
+                <tr id="tr_type_ele">
                     <td style="verticel-align:top;">
                     <span id='stopic'>
                     <b>ระบุ Link:</b>
                     </span>       
-                    </td>
-                    
-                    <td><input type="text" class="form-control" id="txtlink" name="txtlink" onclick="selects_type('3');" value="<?= $meeting["link"]; ?>" readonly></td>
-                   
-                   
+                    </td>                   
+                    <td><input type="text" class="form-control"  onclick="selects_type('3');" value="<?= $meeting["link"]; ?>" readonly></td>                   
                 </tr>
-                 
 
+                <?php } ?>
+                
               
+                <tr id="tr_type_display" class="displaynone">
+                    <td style="verticel-align:top;">
+                    <span id='stopic'>
+                    <b>ระบุ Link:</b>
+                    </span>       
+                    </td>                   
+                    <td><input type="text" class="form-control" id="txtlink" name="txtlink" onclick="selects_type('3');" value="<?= $meeting["link"]; ?>" readonly></td>                   
+                </tr>
+
                 <tr id="tr_save" class="displaynone">
                     <td></td>
-                    <td><a onclick="update_meeting_type();" class="btn btn-info">save</a></td>
+                    <td>
+                        <a onclick="update_meeting_type();" class="btn btn-info">save</a>
+                        <a onclick="cancel_meeting_type();" class="btn btn-default">cancel</a>
+                    </td>
                 </tr>
+              
+
         </table>
         <hr>
         <h4>หัวเอกสาร</h4>
@@ -214,10 +241,12 @@ require_once './layouts/header_admin.php';
 
     <div class="white_background">
 
+
+
         <p><a href="#root_modal" class="btn btn-primary" onclick="settop("<?= $meeting["code"];?>");" rel="modal:open">เพิ่มหัวข้อ</a></p>
         <br>
         <input type="hidden" id='hdnsubcnt' name='hdnsubcnt' value='<?=$subcnt;?>'>
-        <table class="tbl_term table_border" id="tblLocations" cellpadding="0" cellspacing="0" border="1">
+        <table class="tbl_term table_border" id='tblLocations'  cellpadding="0" cellspacing="0" border="1">
             <tr style='background-color:#A0CFEC;'>
                 <td colspan="4" ></td><td></td>
             </tr>

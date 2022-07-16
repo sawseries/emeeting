@@ -10,10 +10,10 @@ class DB {
   );
     
   //public static $connect = array(
-    //    'host' => 'localhost',
-    //    'user' => 'stiinfras_meet',
-    //    'password' => 'TVYyShIAF7bI',
-     //   'database' => 'stiinfras_meet',
-   //);
+  //      'host' => 'localhost',
+  //      'user' => 'stiinfras_meet',
+  //      'password' => 'TVYyShIAF7bI',
+  //      'database' => 'stiinfras_meet',
+  // );
 
 }

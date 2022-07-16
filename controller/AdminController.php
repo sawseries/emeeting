@@ -11,7 +11,7 @@ class AdminController extends Base {
     }
    
     public function admin_index() {
-        $lists = Base::query("SELECT * FROM meeting order by created_at desc")
+        $lists = Base::query("SELECT * FROM meeting order by start_date desc")
                 ->limit(10)
                 ->fetchAll(); //ทั้งหมด    
         $link = Base::links();        

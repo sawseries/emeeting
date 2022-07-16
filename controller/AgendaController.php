@@ -4,24 +4,24 @@ require_once './app/Base.php';
 
 class AgendaController extends Base {
 
+
+    public  $j=1;
+    var $strsub;
+
     public function __construct() {
         if(!isset($_SESSION["Auth"])==true){
            Redirect::view("login/login", array("fail" => "กรุณาเข้าสู่ระบบ"));
         }
     }
    
-
     public function create_agenda() {
         Redirect::to("meeting/create_agenda");
     }
-
-   
 
     public function insert_agenda() {
         $code = topcode();
         $check = Base::query("select count(*) as cnt from meeting where code = '" . $code . "'")->one();
         $file_name = "";
-        //echo $check['cnt'];
         if ($check['cnt'] <= 0) {
             $link='';
             if($_POST["rdo_type"]=='1'){
@@ -68,9 +68,7 @@ class AgendaController extends Base {
             } else if ($type == '3') {
                     $file_size = $_FILES['txtfile']['size'];
                     if ($file_size > 0) {
-                        //$file_ext = explode('.', $_FILES['txtfile']['name']);
                         $extension = pathinfo($_FILES['txtfile']['name'], PATHINFO_EXTENSION);
-                        //echo $extension;
                         $file_name = rand().".".$extension;
                         $file_size = $_FILES['txtfile']['size'];
                         $file_tmp = $_FILES['txtfile']['tmp_name'];
@@ -164,12 +162,6 @@ class AgendaController extends Base {
         echo $_POST["no"]." ".$_POST["id"];
     }
 
-
-
- 
-
-    public  $j=0;
-
     public function edit_agenda() {
         $code = $_GET["code"];
         $meeting = Base::query("select * from meeting where code = '" . $code . "'")->one();
@@ -184,11 +176,7 @@ class AgendaController extends Base {
             "subcnt" => $subcnt,
             "Master" => $Master));
     }
-
-
-
-    
-    var $strsub;
+   
     public function getterm_edit($code) {
 
         $term = Base::query("select * from meeting_term where doc_code = '" . $code . "' and top='0' order by no asc")
@@ -199,9 +187,7 @@ class AgendaController extends Base {
         if ($term->num_rows > 0) {
             
             foreach ($term as $terms) {
-
                 $topic = '';
-
                 if($terms["type"]=='1'){
                     $topic = $terms["topic"];
                 }else if($terms["type"]=='2'){
@@ -209,8 +195,7 @@ class AgendaController extends Base {
                 }else if($terms["type"]=='3'){
                     $topic = "<a href='./storage/agenda/".$terms["file"]."' target='_blank'>".$terms["topic"]."</a>";
                 }
-
-                $this->strsub .= "<tr><td style='width:15%;vertical-align:top;'>";
+                $this->strsub .= "<tr class='root'><td style='width:15%;vertical-align:top;'>";
                 $this->strsub .= "<input type='hidden' id='txtno_".$i."' name='txtno[".$i."]' value=".$terms["id"].">".$terms["title"]."</td>";
                 $this->strsub .= "<td style='width:60%;padding:0em;border:1px solid #7F8C8D;'>";
                 $this->strsub .= "<div style='width:80%;padding:0.6em;float:left;background-color:#e6eeff;'>".$topic."</div>";
@@ -222,23 +207,94 @@ class AgendaController extends Base {
                         $this->strsub .="."; 
                     }
                     $this->strsub .= "</div>";  
-                
-                
                 $this->strsub .= $this->getsubterm_edit($terms["code"]);
                          
                 $this->strsub .= "</td>";             
-                $this->strsub .= "<th style='width:2%;padding:0.1em;vertical-align:top;'><a title='เพิ่ม' onclick='setsubtop(\"" . $terms["code"] . "\");' class='btn btn-primary' href='#sub_modal' rel='modal:open'><span class='fa fa-plus'></span></a></th>";
-                $this->strsub .= "<th style='width:2%;padding:0.1em;vertical-align:top;'><a onclick='seteditroot(\"" . $terms["id"] . "\");' class='btn btn-default' href='#edit_root_modal' rel='modal:open'><span class='fa fa-pencil-square-o'></span></a></th>";
-                $this->strsub .= "<th style='width:2%;padding:0.1em;vertical-align:top;'><a style='cursor:pointer;' onclick='deleteterm(\"" . $terms["code"] . "\");' class='btn btn-danger'><span class='fa fa-trash'></span></a></th>";
+                $this->strsub .= "<th style='width:2%;padding:0.1em;vertical-align:top;'><a  onclick='setsubtop(\"" . $terms["code"] . "\");' class='btn btn-primary' href='#sub_modal' rel='modal:open'><span title='เพิ่ม' class='fa fa-plus'></span></a></th>";
+                $this->strsub .= "<th style='width:2%;padding:0.1em;vertical-align:top;'><a onclick='seteditroot(\"" . $terms["id"] . "\");' class='btn btn-default' href='#edit_root_modal' rel='modal:open'><span title='แก้ไข' class='fa fa-pencil-square-o'></span></a></th>";
+                $this->strsub .= "<th style='width:2%;padding:0.1em;vertical-align:top;'><a style='cursor:pointer;' onclick='deleteterm(\"" . $terms["code"] . "\");' class='btn btn-danger'><span title='ลบ' class='fa fa-trash'></span></a></th>";
                 $this->strsub .= "</tr>";
-                $i++;
+                $i++;      
             }
         }
-
         return $this->strsub;
     }
     
+   /* public function getsubterm_edit($code,$round) {
 
+        $strsub="";
+        $term = Base::query("select * from meeting_term where top = '" . $code . "' order by no asc")->fetchAll();
+        $padding=0;
+
+ 
+
+        if ($term->num_rows > 0) {
+            
+            $this->strsub .= "<div style='width:100%;'>";     
+            $this->strsub .= "<table id='sorsubtable_".$round."' style='width:100%;'>";
+            $this->strsub .= "<tr style='display:none;'><td>+</td></tr>"; //skiprow0
+            foreach ($term as $terms) {  
+
+                $topic = '';
+                if($terms["type"]=='1'){
+                    $topic = $terms["topic"];
+                }else if($terms["type"]=='2'){
+                    $topic = "<a href='".$terms["file"]."' target='_blank'>".$terms["topic"]."</a>";
+                }else if($terms["type"]=='3'){
+                    $topic = "<a href='./storage/agenda/".$terms["file"]."' target='_blank' style='float:left;'>".$terms["topic"]."</a>";
+                }            
+
+            $this->strsub .= "<tr>"; //
+            $this->strsub .= "<td style='width:100%;padding:0 em;'>";
+          //  $this->strsub .= $this->j."//";
+            $this->strsub .= "<table border='0' style='width:100%;'>"; //
+            $this->strsub .= "<input type='hidden' id='txtsubno' name='txtsubno' value='".$terms["id"]."'>";
+
+            $this->strsub .= "<tr>"; //
+            $this->strsub .= "<td style='width:80%;'>";
+          
+            $this->strsub .= $round."//".$topic;
+           // $this->strsub .= $topic;
+   
+            $this->strsub .= "</td>";    
+
+            $this->strsub .= "<td style='width:5%;text-align:center;'>";
+             if($terms["type"]=='3'){ 
+            $this->strsub .= "<a title='".$terms["file"]."' target='_blank' href='./storage/agenda/".$terms["file"]."' target='_blank' style='float:left;'><img src='./assets/image/file_icon.jpg' style='width:20px;float:left;'></a>";  
+           
+             } 
+
+            $this->strsub .= "</td>";    
+            $this->strsub .= "<td style='width:5%;text-align:center;'>";
+            $this->strsub .= "<a href='#sub_modal'  onclick='setsubtop(\"" . $terms["code"] . "\");' rel='modal:open'>".$terms["title"]."<span style='cursor:pointer;' title='เพิ่ม' class='fa fa-plus'></span></a>";
+            $this->strsub .= "</td>";
+            $this->strsub .= "<td style='width:5%;text-align:center;'>";
+            $this->strsub .= "<a href='#edit_sub_modal' title='แก้ไข' onclick='setedit_sub(\"" . $terms["id"] . "\");' rel='modal:open'>".$terms["title"]."<span style='cursor:pointer;' title='แก้ไข' class='fa fa-pencil'></span></a>";
+            $this->strsub .= "</td>";
+            $this->strsub .= "<td style='width:5%;text-align:center;'>";
+            $this->strsub .= "<a  onclick='deleteterm(\"" . $terms["code"] . "\");'><span style='color:red;cursor:pointer;' title='ลบ' class='fa fa-trash'></span></a>";
+            $this->strsub .= "</td>"; 
+            $this->strsub .= "</tr>"; //
+            $this->strsub .= "</table>";//
+            $round++;
+            $this->j++; 
+            $this->strsub .= $this->getsubterm_edit($terms["code"],$round);
+            $this->strsub .= "</td>"; 
+            $this->strsub .= "</tr>"; //
+           
+       
+            //$this->strsub .= $this->getsubterm_edit($terms["code"]);
+            }
+            $this->strsub .= "</table>";
+            $this->strsub .= "</div>";
+            
+           
+        }       
+        return $strsub;
+
+
+
+    }*/
     public function getsubterm_edit($code) {
 
         $strsub="";
@@ -267,28 +323,24 @@ class AgendaController extends Base {
             }
             $this->strsub .= "</td>";    
             $this->strsub .= "<td style='width:5%;text-align:center;'>";
-            $this->strsub .= "<a href='#sub_modal' title='เพิ่ม' onclick='setsubtop(\"" . $terms["code"] . "\");' rel='modal:open'>".$terms["title"]."<span style='cursor:pointer;' title='edit' class='fa fa-plus'></span></a>";
+            $this->strsub .= "<a href='#sub_modal'  onclick='setsubtop(\"" . $terms["code"] . "\");' rel='modal:open'>".$terms["title"]."<span style='cursor:pointer;' title='เพิ่ม' class='fa fa-plus'></span></a>";
             $this->strsub .= "</td>";
             $this->strsub .= "<td style='width:5%;text-align:center;'>";
-            $this->strsub .= "<a href='#edit_sub_modal' onclick='setedit_sub(\"" . $terms["id"] . "\");' rel='modal:open'>".$terms["title"]."<span style='cursor:pointer;' title='edit' class='fa fa-pencil'></span></a>";
+            $this->strsub .= "<a href='#edit_sub_modal' onclick='setedit_sub(\"" . $terms["id"] . "\");' rel='modal:open'>".$terms["title"]."<span style='cursor:pointer;' title='แก้ไข' class='fa fa-pencil'></span></a>";
             $this->strsub .= "</td>";
             $this->strsub .= "<td style='width:10%;text-align:center;'>";
             $this->strsub .= "<a  onclick='deleteterm(\"" . $terms["code"] . "\");'><span style='color:red;cursor:pointer;' title='ลบ' class='fa fa-trash'></span></a>";
-            $this->strsub .= "</td></tr></table></li>";    
+            $this->strsub .= "</td></tr></table>";
             $this->j++;
-            $this->strsub .= $this->getsubterm_edit($terms["code"]);
-  
-
+            $this->strsub .= $this->getsubterm_edit($terms["code"]); 
+           
+            $this->strsub .= "</li>";     
             }
             $this->strsub .= "</ul>";
-       
-            
-      
-            
-            
+           
+  
+            $this->strsub .= "</div>";    
         }
-
-       
         return $strsub;
     }
 
@@ -337,7 +389,6 @@ class AgendaController extends Base {
     
     public function update_meeting(){        
          Base::query("update meeting set ".$_POST["field"]."='".$_POST["value"]."' where code='".$_POST["code"]."'")->execute();
-         //Redirect::para("Master", "getmeeting_term", array("code" => $_POST["code"]));
          echo "success";
     }
     public function update_meeting_type(){   
@@ -351,7 +402,6 @@ class AgendaController extends Base {
 
     public function edit_root(){
         $type = $_POST["rdo_edit_root_type"];
-        //echo $type;
         $link = '';
 
         if($type=='1'){
@@ -362,7 +412,6 @@ class AgendaController extends Base {
               }else{
                 $errors ="กรุณาระบุ link";
               }   
-           // $link = $_POST['txt_edit_root_link'];
         }else if($type=='3'){
 
             $file_size = $_FILES['txt_edit_root_file']['size'];
@@ -395,7 +444,6 @@ class AgendaController extends Base {
         if (empty($errors)) {
             $update = Base::query("update meeting_term set title='".$_POST["txttitle"]."',topic='".$_POST["txttopic"]."',type='".$_POST["rdo_edit_root_type"]."',file='".$link."' where id='".$_POST["hdn_edit_root_id"]."'")->update(); 
             echo true;
-            //echo "update meeting_term set title='".$_POST["txttitle"]."',topic='".$_POST["txttopic"]."',type='".$_POST["rdo_edit_root_type"]."',file='".$link."' where id='".$_POST["hdn_edit_root_id"]."'";
         }else{
         print($errors);  
         exit();
@@ -467,17 +515,6 @@ class AgendaController extends Base {
     Base::query($update)->update();
     echo true;
    }
-
-   public function detail() {
-
-    $meeting = Base::query("select * from meeting where code='" . $_GET["code"] . "'")->one();
-    $terms = $this->getterm($meeting["code"]);
-    $terms_mobile = $this->getterm_mobile($meeting["code"]);
-
-    Redirect::view("meeting/detail", array("meeting" => $meeting, "terms" => $terms, "terms_mobile" => $terms_mobile));
-}
-
-
 
 
   

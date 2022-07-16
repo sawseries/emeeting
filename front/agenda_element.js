@@ -5,8 +5,7 @@ var elecheck = false;
 
 $(function () {   
     $(window).click(function (e) {
-        var target = e.target.id.toString();
-        var elementClassName = e.target.className.toString();  
+
          $("#editor_doctopic_text").click(function (e) {    
             elechecks(true);
           });
@@ -23,35 +22,6 @@ $(function () {
           $(".form-control").click(function (e) {  
               elechecks(true);
             });
-          
-        if(elecheck==false){    
-                if(target!==''){
-                    if(lastcontrol!==''){
-                    windows++;
-                       if(lastcontrol==control){
-                        hidelastcontrol(control);  
-                       }else{
-                        hidelastcontrol(lastcontrol);  
-                       }
-                    }else if((lastcontrol=='')&&(windows>1)){
-                    windows++;
-                    hideedit(control);
-                    }
-                }else{
-                    hideedit(control);
-                }
-        }else{
-          if(target==''){
-            if((control=='doctopic_text')||(control=='detail')){
-            }else{
-              if(lastcontrol==''){
-                hideedit(control);
-              }else{
-                hidelastcontrol(lastcontrol);
-              }
-            }
-          }
-        }
     }); 
 }); 
 
@@ -160,20 +130,27 @@ function selects_type(id) {
  
     if (id == '1') {
         $("#tr_type_display").hide();
+        $("#tr_type_ele").hide();
         $("#tr_save").show();
         $("#txtlink").prop("readonly",true);
 
     } else if (id == '2') {
 
         $("#tr_type_display").show();
+        $("#tr_type_ele").hide();
         $("#tr_save").show();
         $("#txtlink").prop("readonly",false);
 
     } else if (id == '3') {
         $("#tr_type_display").show();
+        $("#tr_type_ele").hide();
         $("#tr_save").show();
         $("#txtlink").prop("readonly",false);
     }
+}
+
+function cancel_meeting_type(){
+    window.location.reload();
 }
 
 
